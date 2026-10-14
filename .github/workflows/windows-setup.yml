@@ -28,7 +28,7 @@ jobs:
       - name: Build application
         shell: pwsh
         run: |
-          python -m PyInstaller --noconfirm --clean --windowed --onedir --name AliciaVoiceChat --collect-all faster_whisper --collect-all ctranslate2 alicia_voice_chat.py
+          python -m PyInstaller --noconfirm --clean --windowed --onedir --name AliciaVoiceChat --collect-all faster_whisper --collect-all ctranslate2 --collect-all sounddevice --collect-all _sounddevice_data --hidden-import sounddevice --hidden-import keyboard --hidden-import pyautogui --hidden-import pyperclip --hidden-import psutil alicia_voice_chat.py
       - name: Install Inno Setup
         shell: pwsh
         run: choco install innosetup --yes --no-progress
