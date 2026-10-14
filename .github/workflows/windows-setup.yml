@@ -23,12 +23,19 @@ jobs:
         shell: pwsh
         run: |
           python -m pip install --upgrade pip
-          python -m pip install --only-binary=:all: -r requirements.txt
+          python -m pip install --only-binary=:all: av
+          python -m pip install -r requirements.txt
           python -m pip install pyinstaller
+          python -c "import sounddevice, faster_whisper, pyautogui, keyboard, pyperclip, psutil; print('Dependencies verified')"
       - name: Build application
         shell: pwsh
         run: |
           python -m PyInstaller --noconfirm --clean --windowed --onedir --name AliciaVoiceChat --collect-all faster_whisper --collect-all ctranslate2 --collect-all sounddevice --collect-all _sounddevice_data --hidden-import sounddevice --hidden-import keyboard --hidden-import pyautogui --hidden-import pyperclip --hidden-import psutil alicia_voice_chat.py
+      - name: Verify bundled imports
+        shell: pwsh
+        run: |
+          $env:PYTHONPATH = (Resolve-Path 'dist/AliciaVoiceChat/_internal').Path
+          python -c "import sounddevice, faster_whisper, pyautogui, keyboard, pyperclip, psutil; print('Bundled imports verified')"
       - name: Install Inno Setup
         shell: pwsh
         run: choco install innosetup --yes --no-progress
